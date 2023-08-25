@@ -4,10 +4,15 @@ object SchemaDefinition {
   val UserType = ObjectType(
     "User",
     fields[UserRepository, User](
-      Fileld("id", StringType, "User ID", resolve = _.value.id),
+      Field("id", StringType, Some("User ID"), resolve = _.value.id),
       // Fileld("id", StringType, "User ID", resolve = v => v.value.id),
-      Field("name", StringType, "User Name", resolve = _.value.name),
-      Field("hobby", StringType, "User Hobby", resolve = _.value.hobby)
+      Field("name", StringType, Some("User Name"), resolve = _.value.name),
+      Field(
+        "hobby",
+        ListType(StringType),
+        Some("User Hobby"),
+        resolve = _.value.hobby
+      )
     )
   )
 
@@ -20,7 +25,7 @@ object SchemaDefinition {
         "User",
         OptionType(UserType),
         arguments = idArgument :: Nil,
-        resolve = ctx => ctx.ctx.findUserById(ctx.arg(idArgument))
+        resolve = ctx => ctx.ctx.findById(ctx.arg(idArgument))
       ),
       Field(
         "Users",
