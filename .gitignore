@@ -1,1 +1,5 @@
 metals*
+project
+target
+
+*.class

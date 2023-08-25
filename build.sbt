@@ -1,8 +1,8 @@
-name := "learning-graphql"
+name := "sangria-example"
 
 version := "0.1"
 
-scalaVersion := "3.3.0"
+scalaVersion := "2.12.5"
 
 libraryDependencies ++= Seq(
   "org.sangria-graphql" %% "sangria" % "1.4.0",
