@@ -1,3 +1,8 @@
+import scala.concurrent.Future
+import scala.util.{Success, Failure}
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
 import sangria.ast.Document
 import sangria.execution.deferred.DeferredResolver
 import sangria.execution.{ErrorWithResolver, Executor, QueryAnalysisError}
@@ -153,12 +158,19 @@ object Server extends App {
         redirect("/graphql", PermanentRedirect)
       }
 
-  val PORT = sys.props.get("http.port").fold(8080)(_.toInt)
-  val INTERFACE = "0.0.0.0"
-  // Http().newServerAt(INTERFACE, PORT).bindFlow(corsHandler(route))
-  Http().bindAndHandle(
+  val bindingFuture = Http().bindAndHandle(
     route,
     "0.0.0.0",
     sys.props.get("http.port").fold(8080)(_.toInt)
   )
+
+  bindingFuture.onComplete {
+    case Success(_) =>
+      println("Server binding successful")
+    case Failure(ex) =>
+      println(s"Server binding failed with error: ${ex.getMessage}")
+  }
+
+  val dummyFuture: Future[Unit] = Future.never
+  Await.result(dummyFuture, Duration.Inf)
 }
