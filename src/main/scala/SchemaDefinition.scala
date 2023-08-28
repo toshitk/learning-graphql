@@ -29,10 +29,16 @@ object SchemaDefinition {
         resolve = ctx => ctx.ctx.findById(ctx.arg(idArgument))
       ),
       Field(
-        "UserByName",
+        "UserByNameExact",
         OptionType(UserType),
         arguments = nameArgument :: Nil,
-        resolve = ctx => ctx.ctx.findByName(ctx.arg(nameArgument))
+        resolve = ctx => ctx.ctx.findByNameExact(ctx.arg(nameArgument))
+      ),
+      Field(
+        "UserByNamePartial",
+        OptionType(UserType),
+        arguments = nameArgument :: Nil,
+        resolve = ctx => ctx.ctx.findByNamePartial(ctx.arg(nameArgument))
       ),
       Field(
         "Users",
