@@ -17,15 +17,22 @@ object SchemaDefinition {
   )
 
   val idArgument = Argument("id", StringType, description = "id")
+  val nameArgument = Argument("name", StringType, description = "name")
 
   val QueryType = ObjectType(
     "Query",
     fields[UserRepository, Unit](
       Field(
-        "User",
+        "UserById",
         OptionType(UserType),
         arguments = idArgument :: Nil,
         resolve = ctx => ctx.ctx.findById(ctx.arg(idArgument))
+      ),
+      Field(
+        "UserByName",
+        OptionType(UserType),
+        arguments = nameArgument :: Nil,
+        resolve = ctx => ctx.ctx.findByName(ctx.arg(nameArgument))
       ),
       Field(
         "Users",

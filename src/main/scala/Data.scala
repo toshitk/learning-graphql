@@ -8,6 +8,9 @@ class UserRepository {
   def findById(id: String): Option[User] = {
     UserRepository.users.find(_.id == id)
   }
+  def findByName(name: String): Option[User] = {
+    UserRepository.users.find(_.name == name)
+  }
   def listAll(): List[User] = {
     UserRepository.users
   }
