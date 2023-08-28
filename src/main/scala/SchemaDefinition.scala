@@ -16,11 +16,19 @@ object SchemaDefinition {
     )
   )
 
+  val CompanyType = ObjectType(
+    "Company",
+    fields[CompanyRepository, Company](
+      Field("id", StringType, Some("Company ID"), resolve = _.value.id),
+      Field("name", StringType, Some("Company Name"), resolve = _.value.name)
+    )
+  )
+
   val idArgument = Argument("id", StringType, description = "id")
   val nameArgument = Argument("name", StringType, description = "name")
 
-  val QueryType = ObjectType(
-    "Query",
+  val UserQueryType = ObjectType(
+    "UserQuery",
     fields[UserRepository, Unit](
       Field(
         "UserById",
@@ -48,5 +56,18 @@ object SchemaDefinition {
     )
   )
 
-  val UserSchema = Schema(QueryType)
+  val CompanyQueryType = ObjectType(
+    "CompanyQuery",
+    fields[CompanyRepository, Unit](
+      Field(
+        "CompanyById",
+        OptionType(CompanyType),
+        arguments = idArgument :: Nil,
+        resolve = ctx => ctx.ctx.findById(ctx.arg(idArgument))
+      )
+    )
+  )
+
+  val UserSchema = Schema(UserQueryType)
+  val CompanySchema = Schema(CompanyQueryType)
 }

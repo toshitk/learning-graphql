@@ -43,9 +43,11 @@ object Server extends App {
     complete(
       Executor
         .execute(
-          SchemaDefinition.UserSchema,
+          // SchemaDefinition.UserSchema,
+          SchemaDefinition.CompanySchema,
           query,
-          new UserRepository,
+          // new UserRepository,
+          new CompanyRepository,
           variables = if (variables.isNull) Json.obj() else variables,
           operationName = operationName
         )

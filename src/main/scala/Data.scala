@@ -3,6 +3,10 @@ case class User(
     name: String,
     hobby: List[String]
 )
+case class Company(
+    id: String,
+    name: String
+)
 
 class UserRepository {
   def findById(id: String): Option[User] = {
@@ -19,9 +23,22 @@ class UserRepository {
   }
 }
 
+class CompanyRepository {
+  def findById(id: String): Option[Company] = {
+    CompanyRepository.companies.find(_.id == id)
+  }
+}
+
 object UserRepository {
   val users = List(
     User("1", "Alice", List("cooking", "camping")),
     User("2", "Bob", List("fishing"))
+  )
+}
+
+object CompanyRepository {
+  val companies = List(
+    Company("1", "Apple"),
+    Company("2", "Alphabet")
   )
 }
